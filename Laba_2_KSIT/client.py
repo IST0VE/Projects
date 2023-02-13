@@ -1,3 +1,4 @@
+# Код для клиента
 import socket
 # создаем сокет
 clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

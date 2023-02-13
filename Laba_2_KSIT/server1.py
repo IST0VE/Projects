@@ -1,3 +1,4 @@
+# Код для сервера
 import socket
 import time
 # создаем сокет
