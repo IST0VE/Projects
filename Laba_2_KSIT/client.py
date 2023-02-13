@@ -1,7 +1,7 @@
 import socket
 
 clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-clientsocket.connect(('localhost', 9999))
+clientsocket.connect(('localhost', 20001))
 
 client_name = input("Enter your name: ")
 clientsocket.send(client_name.encode())

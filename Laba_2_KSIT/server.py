@@ -4,7 +4,7 @@ import socket
 import time
 
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-serversocket.bind(('localhost', 9999))
+serversocket.bind(('localhost', 20001))
 serversocket.listen(5)
 
 print("Server is ready to receive requests")
