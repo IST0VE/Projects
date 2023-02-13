@@ -7,7 +7,7 @@ client_name = input("Enter your name: ")
 clientsocket.send(client_name.encode())
 
 message = input("Enter your message: ")
-clientsocket.send(message.encode())
+clientsocket.send(message.encode('utf-8'))
 
 response = clientsocket.recv(1024).decode()
 print("Received response:", response)

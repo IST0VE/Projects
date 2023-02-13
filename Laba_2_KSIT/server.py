@@ -20,10 +20,10 @@ while True:
     if message == "Покажи время":
         current_time = time.ctime()
         response = "{} says: {}".format(client_name, current_time)
-        clientsocket.send(response.encode())
+        clientsocket.send(response.encode('utf-8'))
     else:
         response = "Invalid request"
-        clientsocket.send(response.encode())
+        clientsocket.send(response.encode('utf-8'))
         clientsocket.close()
         break
 
