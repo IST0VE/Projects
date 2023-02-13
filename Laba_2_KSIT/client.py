@@ -6,10 +6,14 @@ clientsocket.connect(('localhost', 9999))
 client_name = input("Enter your name: ")
 clientsocket.send(client_name.encode())
 
-message = input("Enter your message: ")
-clientsocket.send(message.encode('utf-8'))
-
-response = clientsocket.recv(1024).decode()
-print("Received response:", response)
-
+while True:
+    request = input("Enter your request: ")
+    if request == "Покажи время":
+        clientsocket.send(request.encode())
+        response = clientsocket.recv(1024).decode()
+        print(response)
+    else:
+        print("Closing connection...")
+        clientsocket.close()
+        break
 clientsocket.close()
