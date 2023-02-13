@@ -16,7 +16,7 @@ client_socket.sendall(message.encode('utf-8'))
 response = client_socket.recv(1024).decode()
 
 # Вывод результатов на экран
-print("Reversed message: ", response)
+print(response)
 
 # Закрытие сокета клиента
 client_socket.close()
