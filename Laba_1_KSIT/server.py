@@ -25,7 +25,7 @@ letter_count = len(message)
 
 # Отправка обработанного сообщения клиенту
 response = f"Reversed Message: {reversed_message}\nUppercase Message: {uppercase_message}\nLetter Count: {letter_count}"
-connection.sendall(response.encode())
+connection.sendall(response.encode('utf-8'))
 
 # Закрытие сокета сервера
 connection.close()

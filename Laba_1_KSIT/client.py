@@ -10,7 +10,7 @@ client_socket.connect(server_address)
 
 # Отправка сообщения
 message = input("Enter a message to send to the server: ")
-client_socket.sendall(message.encode())
+client_socket.sendall(message.encode('utf-8'))
 
 # Получение ответа от сервера
 response = client_socket.recv(1024).decode()
