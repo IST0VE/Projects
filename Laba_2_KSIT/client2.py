@@ -14,3 +14,4 @@ while True:
     sock.sendto(message.encode('utf-8'), ('localhost', 20001))
     data, addr = sock.recvfrom(1024)
     print(data.decode('utf-8'))
+
