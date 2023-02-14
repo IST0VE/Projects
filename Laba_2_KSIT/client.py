@@ -1,16 +1,22 @@
 import socket
 
-# Создание сокета UDP
+# создаем объект сокета для UDP-протокола
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-# Получение имени клиента
-name = input("Введите ваше имя: ")
-# Отправка имени на сервер
-sock.sendto(name.encode('utf-8'), ('localhost', 20001))
-print("Вы подключены к серверу")
+
+# задаем адрес и порт сервера
+server_address = ('localhost', 20001)
+
+# получаем имя клиента
+name = input('Введите ваше имя: ')
+
+# отправляем имя на сервер для регистрации
+sock.sendto(name.encode(), server_address)
+
+# выводим сообщение об успешном подключении
+print('Подключение к серверу выполнено.')
 
 while True:
-    # Запрос времени у сервера
-    message = "time"
-    sock.sendto(message.encode('utf-8'), ('localhost', 20001))
-    data, addr = sock.recvfrom(1024)
-    print(data.decode('utf-8'))
+    # получаем сообщение от сервера и выводим его на экран
+    data, server = sock.recvfrom(4096)
+    message = data.decode()
+    print(message)
