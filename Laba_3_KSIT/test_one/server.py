@@ -1,29 +1,28 @@
 import socket
-import time
+import datetime
 
-# Server code
+# Настройки сервера
+IP = "127.0.0.1"
+PORT = 20001
 
-# Using the "with" statement to ensure that the socket is properly closed after the work is done
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
-    # Bind the socket to a specific address and port
-    server_socket.bind(('localhost', 20001))
-    # Set the maximum number of queued connections
-    server_socket.listen(2)
+# Создаем сокет
+with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as server_socket:
+    # Привязываем сокет к IP и PORT
+    server_socket.bind((IP, PORT))
+    print("[INFO] Server is ready and waiting for clients...")
 
-    # Wait for incoming connections
+    # Бесконечный цикл, чтобы прослушивать клиентов
     while True:
-        # Accept the connection
-        client_socket, client_address = server_socket.accept()
-        print(f"Accepted connection from {client_address}")
-
-        # Receive the client's message
-        client_message = client_socket.recv(1024).decode()
-
-        # Check if the client's message is "Show time"
-        if client_message == "Show time":
-            # Send the current time to the client
-            current_time = time.strftime("%Y-%m-%d %H:%M:%S")
-            client_socket.send(current_time.encode())
+        # Принимаем данные от клиента
+        data, address = server_socket.recvfrom(1024)
+        data = data.decode("utf-8")
+        
+        # Проверяем, является ли запрос о времени
+        if data == "Show time":
+            # Отправляем текущее время клиенту
+            time = str(datetime.datetime.now().time())
+            server_socket.sendto(time.encode("utf-8"), address)
         else:
-            # Close the connection if the client's message is not "Show time"
-            client_socket.close()
+            # Если запрос не является запросом о времени, то завершаем работу сервера
+            print("[INFO] Closing server...")
+            break
