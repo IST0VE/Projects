@@ -1,22 +1,25 @@
-# Код для клиента
 import socket
 
-# Создание сокета клиента
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# IP-адрес и порт сервера, к которому мы подключаемся
+UDP_IP = "127.0.0.1"
+UDP_PORT = 5005
 
-# Подключение к серверу
-server_address = ('localhost', 20001)
-client_socket.connect(server_address)
+# Запрос ввода сообщения от пользователя
+message = input("Enter a message: ")
 
-# Отправка сообщения
-message = input("Enter a message to send to the server: ")
-client_socket.sendall(message.encode('utf-8'))
+# Создание сокета для протокола UDP
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-# Получение ответа от сервера
-response = client_socket.recv(1024).decode()
+# Отправка сообщения серверу по заданному IP-адресу и порту
+sock.sendto(message.encode(), (UDP_IP, UDP_PORT))
 
-# Вывод результатов на экран
+# Вывод сообщения о подключении к серверу
+print("Connected to server.")
+
+# Получение ответа от сервера и адреса отправителя
+data, addr = sock.recvfrom(1024)
+# Декодирование ответа в строку
+response = data.decode()
+# Вывод ответа на экран
 print(response)
-
-# Закрытие сокета клиента
-client_socket.close()
+sock.close()
