@@ -1,34 +1,44 @@
 import socket
 
-HOST = '127.0.0.1'  # localhost
-PORT = 20001        # порт по умолчанию
+# создаем объект сокета
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-# Создаем сокет TCP/IP, используя семейство адресов IPv4 (AF_INET) и протокол TCP (SOCK_STREAM)
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    # Связываем сокет с заданным хостом и портом
-    s.bind((HOST, PORT))
-    # Переводим сокет в режим прослушивания (бэклог - это количество соединений в очереди, которые могут быть обработаны)
-    s.listen(1)
-    print('Сервер запущен и ожидает подключения...')
-    # Ожидаем подключения клиента
-    conn, addr = s.accept()
-    print('Подключено к клиенту:', addr)
-    # Бесконечный цикл для приема и отправки данных
-    while True:
-        # Принимаем данные от клиента, используя соединение conn. Максимальный размер буфера - 1024 байт
-        data = conn.recv(1024)
-        # Если данные не получены, значит клиент закрыл соединение, выходим из цикла
-        if not data:
-            break
-        # Декодируем байты в строку (данные от клиента)
-        message = data.decode('utf-8')
-        # Получаем перевернутое сообщение, используя срез
-        reversed_message = message[::-1]
-        # Получаем сообщение в верхнем регистре, используя метод upper()
-        uppercase_message = message.upper()
-        # Получаем количество символов в сообщении, используя функцию len()
-        message_length = str(len(message))
-        # Создаем строку-ответ, включающую перевернутое сообщение, сообщение в верхнем регистре, количество символов и дополнение
-        response = f'Перевернутое сообщение: {reversed_message}\nСообщение в верхнем регистре: {uppercase_message}\nКоличество символов в сообщении: {message_length}\nДополнение: Hello from server'
-        # Отправляем ответ обратно клиенту, используя соединение conn
-        conn.sendall(response.encode('utf-8'))
+# определяем хост и порт
+host = '127.0.0.1'
+port = 12345
+
+# связываем объект сокета с хостом и портом
+server_socket.bind((host, port))
+
+# слушаем входящие соединения
+server_socket.listen(1)
+
+print('Сервер запущен и готов к работе')
+
+while True:
+    # принимаем входящее соединение
+    client_socket, addr = server_socket.accept()
+    
+    # получаем сообщение от клиента
+    message = client_socket.recv(1024).decode()
+    
+    # переворачиваем сообщение
+    message_reversed = message[::-1]
+    
+    # переводим сообщение в верхний регистр
+    message_upper = message.upper()
+    
+    # определяем количество символов в сообщении
+    message_length = len(message)
+    
+    # генерируем дополнительную информацию
+    additional_info = 'Сервер получил сообщение и обработал его'
+    
+    # формируем ответное сообщение
+    response = f'Сообщение: {message}\nПеревернутое сообщение: {message_reversed}\nСообщение в верхнем регистре: {message_upper}\nКоличество символов: {message_length}\n{additional_info}'
+    
+    # отправляем ответное сообщение клиенту
+    client_socket.send(response.encode())
+    
+    # закрываем соединение с клиентом
+    client_socket.close()

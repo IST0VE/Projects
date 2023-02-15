@@ -1,17 +1,19 @@
 import socketserver
-import datetime
 
 class MyUDPHandler(socketserver.BaseRequestHandler):
     def handle(self):
-        data = self.request[0].decode().strip()
-        socket = self.request[1]
-        print(f"Received data from {self.client_address}: {data}")
-        today = datetime.datetime.now()
-        response = f"Hello, {data}! Today is {today.strftime('%Y-%m-%d')}".encode()
-        socket.sendto(response, self.client_address)
+        data, socket = self.request
+        name = data.decode().strip()
+        if not hasattr(self, 'clients'):
+            self.clients = []
+        self.clients.append((name, socket[0], socket[1]))
+        if len(self.clients) == 1:
+            message = f"{name}, your IP: {socket[0]}, port: {socket[1]}"
+        else:
+            message = f"The length of your name, {name}, is {len(name)}"
+        socket.sendto(message.encode(), socket)
 
-HOST, PORT = "localhost", 20001
-
-with socketserver.UDPServer((HOST, PORT), MyUDPHandler) as server:
-    print(f"Server started on {HOST}:{PORT}")
-    server.serve_forever()
+if __name__ == "__main__":
+    with socketserver.UDPServer(('localhost', 9999), MyUDPHandler) as server:
+        print('Server started, waiting for clients')
+        server.serve_forever()

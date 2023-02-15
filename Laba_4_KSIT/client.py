@@ -1,21 +1,25 @@
 import socket
 
-HOST = '127.0.0.1'  # localhost
-PORT = 20001        # порт по умолчанию
+# создаем объект сокета
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-# Создаем сокет TCP/IP, используя семейство адресов IPv4 (AF_INET) и протокол TCP (SOCK_STREAM)
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    # Устанавливаем соединение с сервером, используя адрес сервера (хост и порт)
-    s.connect((HOST, PORT))
-    # Запросить у пользователя ввод сообщения
-    message = input("Введите сообщение: ")
-    # Кодируем строку в байты (для отправки на сервер)
-    encoded_message = message.encode('utf-8')
-    # Отправляем данные на сервер, используя соединение s
-    s.sendall(encoded_message)
-    # Принимаем ответ от сервера, максимальный размер буфера - 1024 байта
-    data = s.recv(1024)
-    # Декодируем байты в строку (ответ от сервера)
-    response = data.decode('utf-8')
-    # Выводим ответ от сервера
-    print(response)
+# определяем хост и порт сервера
+host = '127.0.0.1'
+port = 12345
+
+# соединяемся с сервером
+client_socket.connect((host, port))
+
+# получаем сообщение от пользователя
+message = input('Введите сообщение: ')
+
+# отправляем сообщение серверу
+client_socket.send(message.encode())
+
+# получаем ответное сообщение от сервера
+response = client_socket.recv(1024).decode()
+
+print(response)
+
+# закрываем соединение с сервером
+client_socket.close()
