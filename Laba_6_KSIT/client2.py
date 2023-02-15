@@ -1,6 +1,6 @@
 import socket
 
-server_address = ('localhost', 9999)
+server_address = ('localhost', 20001)
 
 with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
     while True:

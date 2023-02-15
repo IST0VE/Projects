@@ -14,6 +14,6 @@ class MyUDPHandler(socketserver.BaseRequestHandler):
         socket.sendto(message.encode(), socket)
 
 if __name__ == "__main__":
-    with socketserver.UDPServer(('localhost', 9999), MyUDPHandler) as server:
+    with socketserver.UDPServer(('localhost', 20001), MyUDPHandler) as server:
         print('Server started, waiting for clients')
         server.serve_forever()
