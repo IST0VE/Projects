@@ -24,7 +24,7 @@ def generate_response(text):
         max_tokens=2048,
         n=2,
         stop=None,
-        temperature=0.74,
+        temperature=0.75,
     )
     return response.choices[0].text.strip()
 
